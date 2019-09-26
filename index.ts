@@ -5,12 +5,12 @@ import { notOperation } from './src/notOperation';
 
 export interface SpecificationData {
   desc: string;
-  isSatisfiedBy: (entity: any) => boolean;
+  isSatisfiedBy: <T>(entity: T) => boolean;
 }
 
 export interface Specification {
   desc: string;
-  isSatisfiedBy: (entity: any) => boolean;
+  isSatisfiedBy: <T>(entity: T) => boolean;
   and: (spec: Specification) => Specification;
   or: (spec: Specification) => Specification;
   xor: (spec: Specification) => Specification;

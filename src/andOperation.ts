@@ -6,7 +6,7 @@ export function andOperation(
 ): SpecificationData {
   const desc = `${parentSpecData.desc} AND (${spec.desc})`;
 
-  const isSatisfiedBy = (entity: any): boolean => {
+  const isSatisfiedBy = <T>(entity: T): boolean => {
     return parentSpecData.isSatisfiedBy(entity) && spec.isSatisfiedBy(entity);
   };
 
