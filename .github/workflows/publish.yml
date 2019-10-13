@@ -14,9 +14,6 @@ jobs:
       name: Use Node.js 12.x
     - uses: actions/setup-node@v1
       name: Publishing
-      env:
-        CI: true
-        NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
       with:
         node-version: 12.x
         registry-url: 'https://registry.npmjs.org'
@@ -27,3 +24,6 @@ jobs:
         npm test
         npm build
         npm publish
+      env:
+        CI: true
+        NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
