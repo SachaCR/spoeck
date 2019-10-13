@@ -1,4 +1,4 @@
-  
+
 name: Publish
 
 on:
@@ -15,6 +15,7 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: 12.x
+        NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
     - name: Publishing
       run: |
         npm install
