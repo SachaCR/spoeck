@@ -1,6 +1,6 @@
 # Spoeck
 
-Specification pattern library
+Specification pattern library written in typescript.
 
 # Create a specification :
 
@@ -14,22 +14,22 @@ const dragon = {
 };
 
 const dragonIsBlue = createSpec({
-  desc: 'Dragon is blue',
   name: 'dragonIsBlue',
+  desc: 'Dragon is blue',
   isSatisfiedBy: <T>(entity: T) => ({ value: entity.color === 'blue' }),
 });
 
 const result = dragonIsBlue.isSatisfiedBy(dragon);
 
-const result.value // --> true
+const result.value // => true
 ```
 
 # Result format :
 
 The specification `isSatisifiedBy` function will always return an object with these properties.
-- `name`: is the name of the specification.
-- `desc`: is the description of the specification.
-- `value`: is the boolean that indicate if the specification is respected.
+- `name`: Is the name of the specification.
+- `desc`: Is the description of the specification.
+- `value`: Is the boolean that indicate if the specification is respected.
 - `details`: Is the list of all sub specifications results.
 
 ```typescript
@@ -55,12 +55,14 @@ const compositeRuleResult = {
   details: [
     { name: 'dragonIsBlue', desc: 'Dragon is blue', value: true },
     { name: 'dragonIsIce', desc: 'Dragon is ice', value: true },
-    { name: 'Dragon is young', desc: 'NOT (Dragon is old)', value: false },
+    { name: 'dragonIsYoung', desc: 'NOT (Dragon is old)', value: false },
   ],
 }
 ```
 
-# Combining specifications with AND operator :
+# Combining specifications with operator :
+
+## AND operator:
 
 ```typescript
 import { createSpec } from 'spoeck';
@@ -90,7 +92,7 @@ const result = dragonIsBlueANDIce.isSatisfiedBy(dragon);
 result.value; // => true
 ```
 
-# Combining specifications with OR operator :
+## OR operator :
 
 ```typescript
 const dragonIsBlueORIce = dragonIsBlue.or(dragonIsIce, 'dragonIsBlueORIce');
@@ -100,7 +102,7 @@ const result = dragonIsBlueORIce.isSatisfiedBy(dragon);
 result.value; // => true
 ```
 
-# Combining specifications with XOR operator :
+## XOR operator :
 
 ```typescript
 const dragonIsBlueXORIce = dragonIsBlue.xor(dragonIsIce, 'dragonIsBlueXORIce');
@@ -110,7 +112,7 @@ const result = dragonIsBlueXORIce.isSatisfiedBy(dragon);
 result.value; // => false
 ```
 
-# NOT operator :
+## NOT operator :
 
 ```typescript
 const dragonIsBlueAndNotIce = dragonIsBlue.and(dragonIsIce.not('dragonIsNotIce'), 'dragonIsBlueAndNotIce');
