@@ -8,6 +8,7 @@ export function notOperation(parentSpec: Specification, name: string): Specifica
 
     return {
       name,
+      desc,
       value: !parentResult.value,
       details: [
         {

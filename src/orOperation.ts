@@ -19,6 +19,7 @@ export function orOperation(
 
     return {
       name,
+      desc,
       value: parentResult.value || childResult.value,
       details: details.concat(parentResult.details || []).concat(childResult.details || []),
     };

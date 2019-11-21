@@ -12,6 +12,7 @@ export interface SpecificationData {
 export interface SpecificationResult {
   value: boolean;
   name?: string;
+  desc?: string;
   details?: Array<{
     value: boolean;
     desc: string;
@@ -39,6 +40,7 @@ export function createSpec(specData: SpecificationData): Specification {
       if (!result.details) {
         return {
           name: specData.name,
+          desc: specData.desc,
           value: result.value,
           details: [
             {
@@ -52,6 +54,7 @@ export function createSpec(specData: SpecificationData): Specification {
 
       return {
         name: result.name || specData.name,
+        desc: result.desc || specData.desc,
         value: result.value,
         details: result.details,
       };

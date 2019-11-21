@@ -38,11 +38,14 @@ describe('Given a blue ice dragon of 1000 years', () => {
       it('should return true', () => {
         const result = dragonIsBlue.isSatisfiedBy(dragon);
 
-        expect(result.value).toStrictEqual(true);
-        expect(result.name).toStrictEqual('dragonIsBlue');
-        expect(result.details).toStrictEqual([
-          { value: true, desc: 'Dragon is blue', name: 'dragonIsBlue' },
-        ]);
+        expect(result).toStrictEqual({
+          name: 'dragonIsBlue',
+          desc: 'Dragon is blue',
+          value: true,
+          details: [
+            { name: 'dragonIsBlue', desc: 'Dragon is blue', value: true },
+          ],
+        });
       });
     });
 
@@ -168,12 +171,20 @@ describe('Given a blue ice dragon of 1000 years', () => {
 
         const result = dragonIsBlueIceYoung.isSatisfiedBy(dragon);
 
-        expect(result.value).toStrictEqual(true);
-        expect(result.details).toStrictEqual([
-          { name: 'dragonIsBlue', desc: 'Dragon is blue', value: true },
-          { name: 'dragonIsIce', desc: 'Dragon is ice', value: true },
-          { name: 'Dragon is young', desc: 'NOT (Dragon is old)', value: true },
-        ]);
+        expect(result).toStrictEqual({
+          name: 'dragonIsBlueIceYoung',
+          desc: 'Dragon is blue AND (Dragon is ice) AND (NOT (Dragon is old))',
+          value: true,
+          details: [
+            { name: 'dragonIsBlue', desc: 'Dragon is blue', value: true },
+            { name: 'dragonIsIce', desc: 'Dragon is ice', value: true },
+            {
+              name: 'Dragon is young',
+              desc: 'NOT (Dragon is old)',
+              value: true,
+            },
+          ],
+        });
       });
     });
 

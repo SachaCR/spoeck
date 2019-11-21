@@ -19,6 +19,7 @@ export function andOperation(
 
     return {
       name,
+      desc,
       value: parentResult.value && childResult.value,
       details: details.concat(parentResult.details || []).concat(childResult.details || []),
     };
