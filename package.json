@@ -22,6 +22,14 @@
     "Specification",
     "pattern"
   ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SachaCR/spoeck.git"
+  },
+  "bugs": {
+    "url": "https://github.com/SachaCR/spoeck/issues"
+  },
+  "homepage": "https://github.com/SachaCR/spoeck#readme",
   "author": "SachaCR",
   "license": "MIT",
   "devDependencies": {
