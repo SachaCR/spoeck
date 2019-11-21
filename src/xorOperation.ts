@@ -1,17 +1,28 @@
-import { SpecificationData, Specification } from '..';
+import { SpecificationData, Specification, SpecificationResult } from '..';
 
 export function xorOperation(
-  parentSpecData: SpecificationData,
+  parentSpecData: Specification,
   spec: Specification,
+  name: string,
 ): SpecificationData {
   const desc = `${parentSpecData.desc} XOR (${spec.desc})`;
 
-  const isSatisfiedBy = <T>(entity: T): boolean => {
-    return (
-      (parentSpecData.isSatisfiedBy(entity) && !spec.isSatisfiedBy(entity)) ||
-      (!parentSpecData.isSatisfiedBy(entity) && spec.isSatisfiedBy(entity))
-    );
+  const isSatisfiedBy = <T>(entity: T): SpecificationResult => {
+    const parentResult = parentSpecData.isSatisfiedBy(entity);
+    const childResult = spec.isSatisfiedBy(entity);
+
+    const details: Array<{
+      value: boolean;
+      desc: string;
+      name: string;
+    }> = [];
+
+    return {
+      name,
+      value: (parentResult.value && !childResult.value) || (!parentResult.value && childResult.value),
+      details: details.concat(parentResult.details || []).concat(childResult.details || []),
+    };
   };
 
-  return { desc, isSatisfiedBy };
+  return { desc, name, isSatisfiedBy };
 }

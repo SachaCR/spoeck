@@ -5,33 +5,70 @@ import { notOperation } from './src/notOperation';
 
 export interface SpecificationData {
   desc: string;
-  isSatisfiedBy: <T>(entity: T) => boolean;
+  name: string;
+  isSatisfiedBy: <T>(entity: T) => SpecificationResult;
+}
+
+export interface SpecificationResult {
+  value: boolean;
+  name?: string;
+  details?: Array<{
+    value: boolean;
+    desc: string;
+    name: string;
+  }>;
 }
 
 export interface Specification {
   desc: string;
-  isSatisfiedBy: <T>(entity: T) => boolean;
-  and: (spec: Specification) => Specification;
-  or: (spec: Specification) => Specification;
-  xor: (spec: Specification) => Specification;
-  not: () => Specification;
+  name: string;
+  isSatisfiedBy: <T>(entity: T) => SpecificationResult;
+  and: (spec: Specification, name: string) => Specification;
+  or: (spec: Specification, name: string) => Specification;
+  xor: (spec: Specification, name: string) => Specification;
+  not: (name: string) => Specification;
 }
 
 export function createSpec(specData: SpecificationData): Specification {
-  return {
+  const specification: Specification = {
     desc: specData.desc,
-    isSatisfiedBy: specData.isSatisfiedBy,
-    and: (spec: Specification): Specification => {
-      return createSpec(andOperation(specData, spec));
+    name: specData.name,
+    isSatisfiedBy: <T>(entity: T): SpecificationResult => {
+      const result = specData.isSatisfiedBy(entity);
+
+      if (!result.details) {
+        return {
+          name: specData.name,
+          value: result.value,
+          details: [
+            {
+              name: specData.name,
+              desc: specData.desc,
+              value: result.value,
+            },
+          ],
+        };
+      }
+
+      return {
+        name: result.name || specData.name,
+        value: result.value,
+        details: result.details,
+      };
     },
-    or: (spec: Specification): Specification => {
-      return createSpec(orOperation(specData, spec));
+    and: (spec: Specification, name: string): Specification => {
+      return createSpec(andOperation(specification, spec, name));
     },
-    xor: (spec: Specification): Specification => {
-      return createSpec(xorOperation(specData, spec));
+    or: (spec: Specification, name: string): Specification => {
+      return createSpec(orOperation(specification, spec, name));
     },
-    not: (): Specification => {
-      return createSpec(notOperation(specData));
+    xor: (spec: Specification, name: string): Specification => {
+      return createSpec(xorOperation(specification, spec, name));
+    },
+    not: (name: string): Specification => {
+      return createSpec(notOperation(specification, name));
     },
   };
+
+  return specification;
 }

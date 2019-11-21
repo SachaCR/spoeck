@@ -1,13 +1,23 @@
-import { SpecificationData } from '..';
+import { Specification, SpecificationData, SpecificationResult } from '..';
 
-export function notOperation(
-  parentSpecData: SpecificationData,
-): SpecificationData {
-  const desc = `NOT (${parentSpecData.desc})`;
+export function notOperation(parentSpec: Specification, name: string): SpecificationData {
+  const desc = `NOT (${parentSpec.desc})`;
 
-  const isSatisfiedBy = <T>(entity: T): boolean => {
-    return !parentSpecData.isSatisfiedBy(entity);
+  const isSatisfiedBy = <T>(entity: T): SpecificationResult => {
+    const parentResult = parentSpec.isSatisfiedBy(entity);
+
+    return {
+      name,
+      value: !parentResult.value,
+      details: [
+        {
+          name,
+          desc,
+          value: !parentResult.value,
+        },
+      ],
+    };
   };
 
-  return { desc, isSatisfiedBy };
+  return { desc, name, isSatisfiedBy };
 }

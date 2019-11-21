@@ -9,123 +9,203 @@ describe('Given a blue ice dragon of 1000 years', () => {
 
   describe('Given specifications: dragonIsBlue, dragonIsRed, dragonIsIce, dragonIsOld (> 2000), dragonIsYoung (<=2000)', () => {
     const dragonIsBlue = createSpec({
-      desc: 'Blue',
-      isSatisfiedBy: (entity: any) => entity.color === 'blue',
+      desc: 'Dragon is blue',
+      name: 'dragonIsBlue',
+      isSatisfiedBy: (entity: any) => ({ value: entity.color === 'blue' }),
     });
 
     const dragonIsRed = createSpec({
-      desc: 'Red',
-      isSatisfiedBy: (entity: any) => entity.color === 'red',
+      desc: 'Dragon is red',
+      name: 'dragonIsRed',
+      isSatisfiedBy: (entity: any) => ({ value: entity.color === 'red' }),
     });
 
     const dragonIsIce = createSpec({
-      desc: 'Ice',
-      isSatisfiedBy: (entity: any) => entity.element === 'ice',
+      desc: 'Dragon is ice',
+      name: 'dragonIsIce',
+      isSatisfiedBy: (entity: any) => ({ value: entity.element === 'ice' }),
     });
 
     const dragonIsOld = createSpec({
-      desc: 'Old',
-      isSatisfiedBy: (entity: any) => entity.age > 2000,
+      desc: 'Dragon is old',
+      name: 'dragonIsOld',
+      isSatisfiedBy: (entity: any) => ({ value: entity.age > 2000 }),
     });
 
-    const dragonIsYoung = dragonIsOld.not();
+    const dragonIsYoung = dragonIsOld.not('Dragon is young');
 
     describe('dragonIsBlue.isSatisfiedBy(dragon)', () => {
       it('should return true', () => {
-        expect(dragonIsBlue.isSatisfiedBy(dragon)).toStrictEqual(true);
+        const result = dragonIsBlue.isSatisfiedBy(dragon);
+
+        expect(result.value).toStrictEqual(true);
+        expect(result.name).toStrictEqual('dragonIsBlue');
+        expect(result.details).toStrictEqual([
+          { value: true, desc: 'Dragon is blue', name: 'dragonIsBlue' },
+        ]);
       });
     });
 
     describe('dragonIsRed.isSatisfiedBy(dragon)', () => {
       it('should return false', () => {
-        expect(dragonIsRed.isSatisfiedBy(dragon)).toStrictEqual(false);
+        const result = dragonIsRed.isSatisfiedBy(dragon);
+
+        expect(result.value).toStrictEqual(false);
+        expect(result.name).toStrictEqual('dragonIsRed');
+        expect(result.details).toStrictEqual([
+          { value: false, desc: 'Dragon is red', name: 'dragonIsRed' },
+        ]);
       });
     });
 
     describe('When specification combination is: dragonIsBlue AND dragonIsIce', () => {
       it('should return true', () => {
-        expect(
-          dragonIsBlue.and(dragonIsIce).isSatisfiedBy(dragon),
-        ).toStrictEqual(true);
+        const result = dragonIsBlue
+          .and(dragonIsIce, 'dragonIsBlueAndIce')
+          .isSatisfiedBy(dragon);
+
+        expect(result.value).toStrictEqual(true);
+        expect(result.name).toStrictEqual('dragonIsBlueAndIce');
+        expect(result.details).toStrictEqual([
+          { name: 'dragonIsBlue', desc: 'Dragon is blue', value: true },
+          { name: 'dragonIsIce', desc: 'Dragon is ice', value: true },
+        ]);
       });
     });
 
     describe('Given a combined specification of dragonIsBlue AND NOT dragonIsIce', () => {
       it('should return false', () => {
-        expect(
-          dragonIsBlue.and(dragonIsIce.not()).isSatisfiedBy(dragon),
-        ).toStrictEqual(false);
+        const dragongIsAndNotIce = dragonIsBlue.and(
+          dragonIsIce.not('dragonIsNotIce'),
+          'dragongIsAndNotIce',
+        );
+
+        expect(dragongIsAndNotIce.desc).toStrictEqual(
+          'Dragon is blue AND (NOT (Dragon is ice))',
+        );
+
+        const result = dragongIsAndNotIce.isSatisfiedBy(dragon);
+
+        expect(result.value).toStrictEqual(false);
+        expect(result.name).toStrictEqual('dragongIsAndNotIce');
+        expect(result.details).toStrictEqual([
+          { name: 'dragonIsBlue', desc: 'Dragon is blue', value: true },
+          { name: 'dragonIsNotIce', desc: 'NOT (Dragon is ice)', value: false },
+        ]);
       });
     });
 
     describe('Given a combined specification of dragonIsBlue AND dragonIsIce OR dragonIsOld', () => {
       it('should return true', () => {
-        expect(
-          dragonIsBlue
-            .and(dragonIsIce)
-            .or(dragonIsOld)
-            .isSatisfiedBy(dragon),
-        ).toStrictEqual(true);
+        const result = dragonIsBlue
+          .and(dragonIsIce, 'dragonIsBlueAndIce')
+          .or(dragonIsOld, 'dragonisBlueAndIceOrOld')
+          .isSatisfiedBy(dragon);
+
+        expect(result.value).toStrictEqual(true);
+        expect(result.details).toStrictEqual([
+          { name: 'dragonIsBlue', desc: 'Dragon is blue', value: true },
+          { name: 'dragonIsIce', desc: 'Dragon is ice', value: true },
+          { name: 'dragonIsOld', desc: 'Dragon is old', value: false },
+        ]);
       });
     });
 
     describe('Given a combined specification of dragonIsRed AND dragonIsIce OR dragonIsOld', () => {
       it('should return false', () => {
-        expect(
-          dragonIsRed
-            .and(dragonIsIce)
-            .or(dragonIsOld)
-            .isSatisfiedBy(dragon),
-        ).toStrictEqual(false);
+        const result = dragonIsRed
+          .and(dragonIsIce, 'dragonIsRedAndIce')
+          .or(dragonIsOld, 'dragonisRedAndIceOrOld')
+          .isSatisfiedBy(dragon);
+
+        expect(result.value).toStrictEqual(false);
+        expect(result.details).toStrictEqual([
+          { name: 'dragonIsRed', desc: 'Dragon is red', value: false },
+          { name: 'dragonIsIce', desc: 'Dragon is ice', value: true },
+          { name: 'dragonIsOld', desc: 'Dragon is old', value: false },
+        ]);
       });
     });
 
     describe('Given a combined specification of dragonIsRed AND dragonIsIce OR dragonIsYoung', () => {
       it('should return true', () => {
-        expect(
-          dragonIsRed
-            .and(dragonIsIce)
-            .or(dragonIsYoung)
-            .isSatisfiedBy(dragon),
-        ).toStrictEqual(true);
+        const result = dragonIsRed
+          .and(dragonIsIce, 'dragingIsRedAndIce')
+          .or(dragonIsYoung, 'dragingIsRedAndIceOrYoung')
+          .isSatisfiedBy(dragon);
 
-        expect(
-          dragonIsRed.and(dragonIsIce).or(dragonIsYoung).desc,
-        ).toStrictEqual('Red AND (Ice) OR (NOT (Old))');
+        expect(result.value).toStrictEqual(true);
+        expect(result.details).toStrictEqual([
+          { name: 'dragonIsRed', desc: 'Dragon is red', value: false },
+          { name: 'dragonIsIce', desc: 'Dragon is ice', value: true },
+          { name: 'Dragon is young', desc: 'NOT (Dragon is old)', value: true },
+        ]);
       });
     });
 
     describe('Given a combined specification of dragonIsBlue AND dragonIsIce AND dragonIsOld', () => {
       it('should return false', () => {
         const dragonIsBlueIceOld = dragonIsBlue
-          .and(dragonIsIce)
-          .and(dragonIsOld);
+          .and(dragonIsIce, 'dragonIsBlueIce')
+          .and(dragonIsOld, 'dragonIsBlueIceOld');
 
-        expect(dragonIsBlueIceOld.isSatisfiedBy(dragon)).toStrictEqual(false);
+        const result = dragonIsBlueIceOld.isSatisfiedBy(dragon);
+
+        expect(result.value).toStrictEqual(false);
+        expect(result.details).toStrictEqual([
+          { name: 'dragonIsBlue', desc: 'Dragon is blue', value: true },
+          { name: 'dragonIsIce', desc: 'Dragon is ice', value: true },
+          { name: 'dragonIsOld', desc: 'Dragon is old', value: false },
+        ]);
       });
     });
 
     describe('Given a combined specification of dragonIsBlue AND dragonIsIce AND dragonIsYoung', () => {
       it('should return true', () => {
         const dragonIsBlueIceYoung = dragonIsBlue
-          .and(dragonIsIce)
-          .and(dragonIsYoung);
+          .and(dragonIsIce, 'dragonIsBlueIce')
+          .and(dragonIsYoung, 'dragonIsBlueIceYoung');
 
-        expect(dragonIsBlueIceYoung.isSatisfiedBy(dragon)).toStrictEqual(true);
+        const result = dragonIsBlueIceYoung.isSatisfiedBy(dragon);
+
+        expect(result.value).toStrictEqual(true);
+        expect(result.details).toStrictEqual([
+          { name: 'dragonIsBlue', desc: 'Dragon is blue', value: true },
+          { name: 'dragonIsIce', desc: 'Dragon is ice', value: true },
+          { name: 'Dragon is young', desc: 'NOT (Dragon is old)', value: true },
+        ]);
       });
     });
 
     describe('Given a combined specification of dragonIsBlue XOR dragonIsIce', () => {
       it('should return false', () => {
-        const dragonIsBlueXORIce = dragonIsBlue.xor(dragonIsIce);
-        expect(dragonIsBlueXORIce.isSatisfiedBy(dragon)).toStrictEqual(false);
+        const dragonIsBlueXORIce = dragonIsBlue.xor(
+          dragonIsIce,
+          'dragonIsBlueXORIce',
+        );
+        const result = dragonIsBlueXORIce.isSatisfiedBy(dragon);
+
+        expect(result.value).toStrictEqual(false);
+        expect(result.details).toStrictEqual([
+          { name: 'dragonIsBlue', desc: 'Dragon is blue', value: true },
+          { name: 'dragonIsIce', desc: 'Dragon is ice', value: true },
+        ]);
       });
     });
 
     describe('Given a combined specification of dragonIsRed XOR dragonIsIce', () => {
       it('should return true', () => {
-        const dragonIsRedXORIce = dragonIsRed.xor(dragonIsIce);
-        expect(dragonIsRedXORIce.isSatisfiedBy(dragon)).toStrictEqual(true);
+        const dragonIsRedXORIce = dragonIsRed.xor(
+          dragonIsIce,
+          'dragonIsRedXORIce',
+        );
+        const result = dragonIsRedXORIce.isSatisfiedBy(dragon);
+
+        expect(result.value).toStrictEqual(true);
+        expect(result.details).toStrictEqual([
+          { name: 'dragonIsRed', desc: 'Dragon is red', value: false },
+          { name: 'dragonIsIce', desc: 'Dragon is ice', value: true },
+        ]);
       });
     });
   });
