@@ -16,7 +16,7 @@ const dragon = {
 const dragonIsBlue = createSpec({
   name: 'dragonIsBlue',
   desc: 'Dragon is blue',
-  isSatisfiedBy: (entity: any) => ({ value: entity.color === 'blue' }),
+  isSatisfiedBy: (entity: any) => entity.color === 'blue'
 });
 
 const result = dragonIsBlue.isSatisfiedBy(dragon);
@@ -76,13 +76,13 @@ const dragon = {
 const dragonIsBlue = createSpec({
   name: 'dragonIsBlue',
   desc: 'Dragon is blue',
-  isSatisfiedBy: (entity: any) => ({ value: entity.color === 'blue' }),
+  isSatisfiedBy: (entity: any) => entity.color === 'blue'
 });
 
 const dragonIsIce = createSpec({
   name: 'dragonIsIce',
   desc: 'Dragon is ice',
-  isSatisfiedBy: (entity: any) => ({ value: entity.element === 'ice' }),
+  isSatisfiedBy: (entity: any) => entity.element === 'ice'
 });
 
 const dragonIsBlueANDIce = dragonIsBlue.and(dragonIsIce, 'dragonIsBlueANDIce');

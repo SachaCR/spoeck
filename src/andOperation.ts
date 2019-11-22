@@ -1,4 +1,4 @@
-import { SpecificationData, Specification, SpecificationResult} from '..';
+import { SpecificationData, Specification, SpecificationResult} from './buildSpec';
 
 export function andOperation(
   parentSpec: Specification,
@@ -21,7 +21,7 @@ export function andOperation(
       name,
       desc,
       value: parentResult.value && childResult.value,
-      details: details.concat(parentResult.details || []).concat(childResult.details || []),
+      details: details.concat(parentResult.details).concat(childResult.details),
     };
   };
 

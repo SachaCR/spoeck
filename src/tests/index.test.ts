@@ -1,4 +1,4 @@
-import { createSpec } from '../..';
+import { defineSpecification } from '../..';
 
 describe('Given a blue ice dragon of 1000 years', () => {
   const dragon = {
@@ -14,28 +14,28 @@ describe('Given a blue ice dragon of 1000 years', () => {
   }
 
   describe('Given specifications: dragonIsBlue, dragonIsRed, dragonIsIce, dragonIsOld (> 2000), dragonIsYoung (<=2000)', () => {
-    const dragonIsBlue = createSpec({
+    const dragonIsBlue = defineSpecification({
       desc: 'Dragon is blue',
       name: 'dragonIsBlue',
-      isSatisfiedBy: (entity: Dragon) => ({ value: entity.color === 'blue' }),
+      isSatisfiedBy: (entity: Dragon) => entity.color === 'blue'
     });
 
-    const dragonIsRed = createSpec({
+    const dragonIsRed = defineSpecification({
       desc: 'Dragon is red',
       name: 'dragonIsRed',
-      isSatisfiedBy: (entity: Dragon) => ({ value: entity.color === 'red' }),
+      isSatisfiedBy: (entity: Dragon) => entity.color === 'red'
     });
 
-    const dragonIsIce = createSpec({
+    const dragonIsIce = defineSpecification({
       desc: 'Dragon is ice',
       name: 'dragonIsIce',
-      isSatisfiedBy: (entity: Dragon) => ({ value: entity.element === 'ice' }),
+      isSatisfiedBy: (entity: Dragon) => entity.element === 'ice'
     });
 
-    const dragonIsOld = createSpec({
+    const dragonIsOld = defineSpecification({
       desc: 'Dragon is old',
       name: 'dragonIsOld',
-      isSatisfiedBy: (entity: Dragon) => ({ value: entity.age > 2000 }),
+      isSatisfiedBy: (entity: Dragon) => entity.age > 2000
     });
 
     const dragonIsYoung = dragonIsOld.not('Dragon is young');

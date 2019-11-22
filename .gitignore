@@ -65,3 +65,5 @@ typedocs
 .DS_Store
 
 dist
+
+.vscode

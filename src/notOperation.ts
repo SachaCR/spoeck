@@ -1,4 +1,4 @@
-import { Specification, SpecificationData, SpecificationResult } from '..';
+import { Specification, SpecificationData, SpecificationResult } from './buildSpec';
 
 export function notOperation(parentSpec: Specification, name: string): SpecificationData {
   const desc = `NOT (${parentSpec.desc})`;

@@ -1,4 +1,4 @@
-import { SpecificationData, Specification, SpecificationResult } from '..';
+import { SpecificationData, Specification, SpecificationResult } from './buildSpec';
 
 export function xorOperation(
   parentSpecData: Specification,
@@ -21,7 +21,7 @@ export function xorOperation(
       name,
       desc,
       value: (parentResult.value && !childResult.value) || (!parentResult.value && childResult.value),
-      details: details.concat(parentResult.details || []).concat(childResult.details || []),
+      details: details.concat(parentResult.details).concat(childResult.details),
     };
   };
 
