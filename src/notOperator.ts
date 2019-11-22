@@ -1,9 +1,9 @@
 import { Specification, SpecificationData, SpecificationResult } from './buildSpec';
 
-export function notOperation(parentSpec: Specification, name: string): SpecificationData {
+export function notOperator <T>(parentSpec: Specification<T>, name: string): SpecificationData<T> {
   const desc = `NOT (${parentSpec.desc})`;
 
-  const isSatisfiedBy = (entity: any): SpecificationResult => {
+  const isSatisfiedBy = (entity: T): SpecificationResult => {
     const parentResult = parentSpec.isSatisfiedBy(entity);
 
     return {

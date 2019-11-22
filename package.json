@@ -9,7 +9,7 @@
   ],
   "scripts": {
     "build": "tsc",
-    "test": "jest",
+    "test": "jest --verbose",
     "watch": "jest --watchAll",
     "doc": "typedoc --options ./typedocconfig.ts",
     "preversion": "npm test",
@@ -45,7 +45,7 @@
   },
   "jest": {
     "roots": [
-      "<rootDir>/src"
+      "<rootDir>"
     ],
     "transform": {
       "^.+\\.tsx?$": "ts-jest"

@@ -1,13 +1,13 @@
 import { SpecificationData, Specification, SpecificationResult} from './buildSpec';
 
-export function andOperation(
-  parentSpec: Specification,
-  spec: Specification,
+export function andOperator<T>(
+  parentSpec: Specification<T>,
+  spec: Specification<T>,
   name: string,
-): SpecificationData {
+): SpecificationData<T> {
   const desc = `${parentSpec.desc} AND (${spec.desc})`;
 
-  const isSatisfiedBy = (entity: any): SpecificationResult => {
+  const isSatisfiedBy = (entity: T): SpecificationResult => {
     const parentResult = parentSpec.isSatisfiedBy(entity);
     const childResult = spec.isSatisfiedBy(entity);
 

@@ -1,13 +1,13 @@
 import { SpecificationData, Specification, SpecificationResult } from './buildSpec';
 
-export function xorOperation(
-  parentSpecData: Specification,
-  spec: Specification,
+export function xorOperator <T>(
+  parentSpecData: Specification<T>,
+  spec: Specification<T>,
   name: string,
-): SpecificationData {
+): SpecificationData<T> {
   const desc = `${parentSpecData.desc} XOR (${spec.desc})`;
 
-  const isSatisfiedBy = (entity: any): SpecificationResult => {
+  const isSatisfiedBy = (entity: T): SpecificationResult => {
     const parentResult = parentSpecData.isSatisfiedBy(entity);
     const childResult = spec.isSatisfiedBy(entity);
 

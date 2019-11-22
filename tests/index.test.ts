@@ -1,4 +1,4 @@
-import { defineSpecification } from '../..';
+import { defineSpecification } from '../';
 
 describe('Given a blue ice dragon of 1000 years', () => {
   const dragon = {
@@ -14,10 +14,10 @@ describe('Given a blue ice dragon of 1000 years', () => {
   }
 
   describe('Given specifications: dragonIsBlue, dragonIsRed, dragonIsIce, dragonIsOld (> 2000), dragonIsYoung (<=2000)', () => {
-    const dragonIsBlue = defineSpecification({
+    const dragonIsBlue = defineSpecification<Dragon>({
       desc: 'Dragon is blue',
       name: 'dragonIsBlue',
-      isSatisfiedBy: (entity: Dragon) => entity.color === 'blue'
+      isSatisfiedBy: (dragon: Dragon) => dragon.color === 'blue'
     });
 
     const dragonIsRed = defineSpecification({

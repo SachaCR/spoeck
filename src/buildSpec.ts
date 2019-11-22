@@ -1,14 +1,12 @@
-import { andOperation } from './andOperation';
-import { orOperation } from './orOperation';
-import { xorOperation } from './xorOperation';
-import { notOperation } from './notOperation';
+import { andOperator } from './andOperator';
+import { orOperator } from './orOperator';
+import { xorOperator } from './xorOperator';
+import { notOperator } from './notOperator';
 
-export interface SpecificationData {
+export interface SpecificationData<T> {
   desc: string;
   name: string;
-  isSatisfiedBy: (
-    entity: any,
-  ) => SpecificationResult;
+  isSatisfiedBy: (entity: T) => SpecificationResult;
 }
 
 export interface SpecificationResult {
@@ -22,21 +20,22 @@ export interface SpecificationResult {
   }>;
 }
 
-export interface Specification {
+export interface Specification<T> {
   desc: string;
   name: string;
-  isSatisfiedBy: (entity: any) => SpecificationResult;
-  and: (spec: Specification, name: string) => Specification;
-  or: (spec: Specification, name: string) => Specification;
-  xor: (spec: Specification, name: string) => Specification;
-  not: (name: string) => Specification;
+  isSatisfiedBy: (entity: T) => SpecificationResult;
+  and: (spec: Specification<T>, name: string) => Specification<T>;
+  or: (spec: Specification<T>, name: string) => Specification<T>;
+  xor: (spec: Specification<T>, name: string) => Specification<T>;
+  not: (name: string) => Specification<T>;
 }
 
-export function buildSpec(specData: SpecificationData): Specification {
-  const specification: Specification = {
+export function buildSpec<T>(specData: SpecificationData<T>): Specification<T> {
+
+  const specification: Specification<T> = {
     desc: specData.desc,
     name: specData.name,
-    isSatisfiedBy: (entity: any): SpecificationResult => {
+    isSatisfiedBy: (entity: T): SpecificationResult => {
       const result = specData.isSatisfiedBy(entity);
 
       return {
@@ -46,17 +45,17 @@ export function buildSpec(specData: SpecificationData): Specification {
         details: result.details,
       };
     },
-    and: (spec: Specification, name: string): Specification => {
-      return buildSpec(andOperation(specification, spec, name));
+    and: (spec: Specification<T>, name: string): Specification<T> => {
+      return buildSpec(andOperator(specification, spec, name));
     },
-    or: (spec: Specification, name: string): Specification => {
-      return buildSpec(orOperation(specification, spec, name));
+    or: (spec: Specification<T>, name: string): Specification<T> => {
+      return buildSpec(orOperator(specification, spec, name));
     },
-    xor: (spec: Specification, name: string): Specification => {
-      return buildSpec(xorOperation(specification, spec, name));
+    xor: (spec: Specification<T>, name: string): Specification<T> => {
+      return buildSpec(xorOperator(specification, spec, name));
     },
-    not: (name: string): Specification => {
-      return buildSpec(notOperation(specification, name));
+    not: (name: string): Specification<T> => {
+      return buildSpec(notOperator(specification, name));
     },
   };
 
