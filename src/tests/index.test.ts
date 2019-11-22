@@ -7,29 +7,35 @@ describe('Given a blue ice dragon of 1000 years', () => {
     age: 1000,
   };
 
+  type Dragon = {
+    color: string;
+    element: string;
+    age: number;
+  }
+
   describe('Given specifications: dragonIsBlue, dragonIsRed, dragonIsIce, dragonIsOld (> 2000), dragonIsYoung (<=2000)', () => {
     const dragonIsBlue = createSpec({
       desc: 'Dragon is blue',
       name: 'dragonIsBlue',
-      isSatisfiedBy: (entity: any) => ({ value: entity.color === 'blue' }),
+      isSatisfiedBy: (entity: Dragon) => ({ value: entity.color === 'blue' }),
     });
 
     const dragonIsRed = createSpec({
       desc: 'Dragon is red',
       name: 'dragonIsRed',
-      isSatisfiedBy: (entity: any) => ({ value: entity.color === 'red' }),
+      isSatisfiedBy: (entity: Dragon) => ({ value: entity.color === 'red' }),
     });
 
     const dragonIsIce = createSpec({
       desc: 'Dragon is ice',
       name: 'dragonIsIce',
-      isSatisfiedBy: (entity: any) => ({ value: entity.element === 'ice' }),
+      isSatisfiedBy: (entity: Dragon) => ({ value: entity.element === 'ice' }),
     });
 
     const dragonIsOld = createSpec({
       desc: 'Dragon is old',
       name: 'dragonIsOld',
-      isSatisfiedBy: (entity: any) => ({ value: entity.age > 2000 }),
+      isSatisfiedBy: (entity: Dragon) => ({ value: entity.age > 2000 }),
     });
 
     const dragonIsYoung = dragonIsOld.not('Dragon is young');

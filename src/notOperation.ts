@@ -3,7 +3,7 @@ import { Specification, SpecificationData, SpecificationResult } from '..';
 export function notOperation(parentSpec: Specification, name: string): SpecificationData {
   const desc = `NOT (${parentSpec.desc})`;
 
-  const isSatisfiedBy = <T>(entity: T): SpecificationResult => {
+  const isSatisfiedBy = (entity: any): SpecificationResult => {
     const parentResult = parentSpec.isSatisfiedBy(entity);
 
     return {

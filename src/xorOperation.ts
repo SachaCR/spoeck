@@ -7,7 +7,7 @@ export function xorOperation(
 ): SpecificationData {
   const desc = `${parentSpecData.desc} XOR (${spec.desc})`;
 
-  const isSatisfiedBy = <T>(entity: T): SpecificationResult => {
+  const isSatisfiedBy = (entity: any): SpecificationResult => {
     const parentResult = parentSpecData.isSatisfiedBy(entity);
     const childResult = spec.isSatisfiedBy(entity);
 

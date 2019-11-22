@@ -7,7 +7,7 @@ export function orOperation(
 ): SpecificationData {
   const desc = `${parentSpecData.desc} OR (${spec.desc})`;
 
-  const isSatisfiedBy = <T>(entity: T): SpecificationResult => {
+  const isSatisfiedBy = (entity: any): SpecificationResult => {
     const parentResult = parentSpecData.isSatisfiedBy(entity);
     const childResult = spec.isSatisfiedBy(entity);
 

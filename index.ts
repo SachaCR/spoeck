@@ -6,7 +6,7 @@ import { notOperation } from './src/notOperation';
 export interface SpecificationData {
   desc: string;
   name: string;
-  isSatisfiedBy: <T>(entity: T) => SpecificationResult;
+  isSatisfiedBy: (entity: any) => SpecificationResult;
 }
 
 export interface SpecificationResult {
@@ -23,7 +23,7 @@ export interface SpecificationResult {
 export interface Specification {
   desc: string;
   name: string;
-  isSatisfiedBy: <T>(entity: T) => SpecificationResult;
+  isSatisfiedBy: (entity: any) => SpecificationResult;
   and: (spec: Specification, name: string) => Specification;
   or: (spec: Specification, name: string) => Specification;
   xor: (spec: Specification, name: string) => Specification;
@@ -34,7 +34,7 @@ export function createSpec(specData: SpecificationData): Specification {
   const specification: Specification = {
     desc: specData.desc,
     name: specData.name,
-    isSatisfiedBy: <T>(entity: T): SpecificationResult => {
+    isSatisfiedBy: (entity: any): SpecificationResult => {
       const result = specData.isSatisfiedBy(entity);
 
       if (!result.details) {
