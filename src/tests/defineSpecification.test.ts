@@ -11,7 +11,7 @@ describe('defineSpecification()', () => {
     const specification = defineSpecification({
       name: 'dragonIsBlue',
       desc: 'Dragon is blue',
-      isSatisfiedBy: (entity: Dragon) => entity.color === 'blue',
+      isSatisfiedBy: (entity: Dragon) => ({ value: entity.color === 'blue' }),
     });
 
     expect(specification.name).toStrictEqual('dragonIsBlue');

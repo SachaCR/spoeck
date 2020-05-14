@@ -17,25 +17,25 @@ describe('Given a blue ice dragon of 1000 years', () => {
     const dragonIsBlue = defineSpecification<Dragon>({
       desc: 'Dragon is blue',
       name: 'dragonIsBlue',
-      isSatisfiedBy: (dragon: Dragon) => dragon.color === 'blue'
+      isSatisfiedBy: (dragon: Dragon) => ({ value: dragon.color === 'blue' }),
     });
 
     const dragonIsRed = defineSpecification({
       desc: 'Dragon is red',
       name: 'dragonIsRed',
-      isSatisfiedBy: (entity: Dragon) => entity.color === 'red'
+      isSatisfiedBy: (entity: Dragon) => ({ value: entity.color === 'red' }),
     });
 
     const dragonIsIce = defineSpecification({
       desc: 'Dragon is ice',
       name: 'dragonIsIce',
-      isSatisfiedBy: (entity: Dragon) => entity.element === 'ice'
+      isSatisfiedBy: (entity: Dragon) => ({ value: entity.element === 'ice' }),
     });
 
     const dragonIsOld = defineSpecification({
       desc: 'Dragon is old',
       name: 'dragonIsOld',
-      isSatisfiedBy: (entity: Dragon) => entity.age > 2000
+      isSatisfiedBy: (entity: Dragon) => ({ value: entity.age > 2000 }),
     });
 
     const dragonIsYoung = dragonIsOld.not('Dragon is young');
